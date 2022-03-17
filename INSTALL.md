@@ -8,7 +8,7 @@ We tested the installation with a [VMware virtual machine](https://www.vmware.co
 The Gazebo and ROS Melodic installation script will fail if we do not install the Python future package.
 ```
 sudo apt install python-pip
-python -m pip install future
+python2 -m pip install future
 ```
 
 ## Install ROS Melodic with Gazebo 9
