@@ -33,39 +33,6 @@ bash ubuntu_sim_ros_melodic.sh
 popd
 ```
 
-## Fixing Gazebo 9 launch issues
-Gazebo fails to run in our virtual machine after installation. Run the following lines fix the errors. First, we replace a YAML file with a modified version that contains a new URL. We used the following [link](https://varhowto.com/how-to-fix-libcurl-51-ssl-no-alternative-certificate-subject-name-matches-target-host-name-api-ignitionfuel-org-gazebo-ubuntu-ros-melodic/) to implement the fix.
-```
-cp "${HOME}/.ignition/fuel/config.yaml" "${HOME}/.ignition/fuel/config.yaml.original"
-echo "" > "${HOME}/.ignition/fuel/config.yaml"
-echo """
----
-# The list of servers.
-servers:
-  -
-    name: osrf
-    url: https://fuel.ignitionrobotics.org
-
-  # -
-    # name: another_server
-    # url: https://myserver
-
-# Where are the assets stored in disk.
-# cache:
-#   path: /tmp/ignition/fuel
-""" > "${HOME}/.ignition/fuel/config.yaml"
-```
-
-You might receive a symbol lookup error when trying to running Gazebo, which is described on this [Gazebo answers post](https://answers.gazebosim.org//question/22071/symbol-lookup-error-both-instalation-methods/). If you do, run the following command.
-```
-sudo apt upgrade libignition-math2
-```
-
-Finally, let's confirm that Gazebo launches by running the following line. If all went well, Gazebo will run with no errors or warnings.
-```
-gazebo
-```
-
 ## Installing the Intel RealSense ROS packages
 
 Use the following commands to install the Intel RealSense library and ROS packages for Melodic.
@@ -99,3 +66,36 @@ popd
 ```
 
 Once you built the tools, you must restart your computer.
+
+## Fixing Gazebo 9 launch issues
+Gazebo fails to run in our virtual machine after installation. Run the following lines fix the errors. First, we replace a YAML file with a modified version that contains a new URL. We used the following [link](https://varhowto.com/how-to-fix-libcurl-51-ssl-no-alternative-certificate-subject-name-matches-target-host-name-api-ignitionfuel-org-gazebo-ubuntu-ros-melodic/) to implement the fix.
+```
+cp "${HOME}/.ignition/fuel/config.yaml" "${HOME}/.ignition/fuel/config.yaml.original"
+echo "" > "${HOME}/.ignition/fuel/config.yaml"
+echo """
+---
+# The list of servers.
+servers:
+  -
+    name: osrf
+    url: https://fuel.ignitionrobotics.org
+
+  # -
+    # name: another_server
+    # url: https://myserver
+
+# Where are the assets stored in disk.
+# cache:
+#   path: /tmp/ignition/fuel
+""" > "${HOME}/.ignition/fuel/config.yaml"
+```
+
+You might receive a symbol lookup error when trying to running Gazebo, which is described on this [Gazebo answers post](https://answers.gazebosim.org//question/22071/symbol-lookup-error-both-instalation-methods/). If you do, run the following command.
+```
+sudo apt upgrade libignition-math2
+```
+
+Finally, let's confirm that Gazebo launches by running the following line. If all went well, Gazebo will run with no errors or warnings.
+```
+gazebo
+```
