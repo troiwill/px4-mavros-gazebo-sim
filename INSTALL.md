@@ -4,10 +4,23 @@ The following instructions describe how to use the installation
 
 We tested the installation with a [VMware virtual machine](https://www.vmware.com) and with [Ubuntu 18.04 LTS (Bionic Beaver)](https://releases.ubuntu.com/18.04/). However, it is not necessary to use a virtual machine. We use Ubuntu 18.04 because the PX4 installation uses ROS Melodic, which is tied to Ubuntu 18.04.
 
-## Install Python Pip and the 'future' package
+## Download QGroundControl Daily Build
+
+Download the daily build for QGroundControl via the following [link](https://docs.qgroundcontrol.com/master/en/releases/daily_builds.html). Once downloaded, make the AppImage file executable by running the following lines.
+```
+pushd ${HOME}/Downloads
+chmod +x QGroundControl.AppImage
+popd
+```
+
+## Installing VSCode
+
+Let's install the Visual Studio Code (VSCode) IDE. Use the following lines to install VSCode or follow the installation instructions on the [official website](https://code.visualstudio.com/download).
+
+## Install Python2, Pip2, and the 'future' package
 The Gazebo and ROS Melodic installation script will fail if we do not install the Python future package.
 ```
-sudo apt install python-pip
+sudo apt install python-minimal python-pip
 python2 -m pip install future
 ```
 
@@ -43,9 +56,9 @@ servers:
 """ > "${HOME}/.ignition/fuel/config.yaml"
 ```
 
-Next, we run the following line. The fix was described in this [link](https://answers.gazebosim.org//question/13214/virtual-machine-not-launching-gazebo/).
+You might receive a symbol lookup error when trying to running Gazebo, which is described on this [Gazebo answers post](https://answers.gazebosim.org//question/22071/symbol-lookup-error-both-instalation-methods/). If you do, run the following command.
 ```
-echo "export SVGA_VGPU10=0" >> ~/.profile
+sudo apt upgrade libignition-math2
 ```
 
 Finally, let's confirm that Gazebo launches by running the following line. If all went well, Gazebo will run with no errors or warnings.
@@ -53,28 +66,18 @@ Finally, let's confirm that Gazebo launches by running the following line. If al
 gazebo
 ```
 
-## Download QGroundControl Daily Build
+## Installing the Intel RealSense ROS packages
 
-Download the daily build for QGroundControl via the following [link](https://docs.qgroundcontrol.com/master/en/releases/daily_builds.html). Once downloaded, make the AppImage file executable by running the following lines.
+Use the following commands to install the Intel RealSense library and ROS packages for Melodic.
 ```
-pushd ${HOME}/Downloads
-chmod +x QGroundControl.AppImage
-popd
-```
+sudo apt install ros-melodic-realsense2-camera
+sudo apt install ros-melodic-realsense2-description
 
-## Installing VSCode
-
-Let's install the Visual Studio Code (VSCode) IDE. Use the following lines to install VSCode or follow the installation instructions on the [official website](https://code.visualstudio.com/download).
-```
-pushd "${HOME}/Downloads"
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-rm -f packages.microsoft.gpg
-
-sudo apt install apt-transport-https
-sudo apt update
-sudo apt install code
+# Downloading converted SDF cameras.
+pushd ${HOME}/repos
+git clone https://github.com/troiwill/realsense-ros-sdf.git
+cd realsense-ros-sdf
+git checkout sdf
 popd
 ```
 
@@ -85,7 +88,12 @@ Let's build the PX4 repository. The following lines clone the PX4 repository and
 cd "${HOME}"
 mkdir -p repos
 pushd "${HOME}/repos"
-git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+git clone https://github.com/troiwill/PX4-Autopilot.git --recursive
+cd PX4-Autopilot
+git checkout drone-rover
+cd Tools/sitl_gazebo
+git checkout drone-rover-mod
+cd ../../../
 bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 popd
 ```
