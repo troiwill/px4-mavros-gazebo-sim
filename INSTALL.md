@@ -4,13 +4,17 @@ The following instructions describe how to use the installation
 
 We tested the installation with a [VMware virtual machine](https://www.vmware.com) and with [Ubuntu 18.04 LTS (Bionic Beaver)](https://releases.ubuntu.com/18.04/). However, it is not necessary to use a virtual machine. We use Ubuntu 18.04 because the PX4 installation uses ROS Melodic, which is tied to Ubuntu 18.04.
 
+Make a directory for repositories.
+```
+mkdir -p ${HOME}/repos
+```
+
 ## Download QGroundControl Daily Build
 
 Download the daily build for QGroundControl via the following [link](https://docs.qgroundcontrol.com/master/en/releases/daily_builds.html). Once downloaded, make the AppImage file executable by running the following lines.
 ```
-pushd ${HOME}/Downloads
+cd ${HOME}/Downloads
 chmod +x QGroundControl.AppImage
-popd
 ```
 
 ## Installing VSCode
@@ -27,10 +31,9 @@ python2 -m pip install future
 ## Install ROS Melodic with Gazebo 9
 We will use the installation script from PX4 to install ROS Melodic and Gazebo 9.
 ```
-pushd "${HOME}/Downloads"
+cd ${HOME}/Downloads
 wget https://raw.githubusercontent.com/PX4/Devguide/master/build_scripts/ubuntu_sim_ros_melodic.sh
 bash ubuntu_sim_ros_melodic.sh
-popd
 ```
 
 ## Installing the Intel RealSense ROS packages
@@ -41,20 +44,17 @@ sudo apt install ros-melodic-realsense2-camera
 sudo apt install ros-melodic-realsense2-description
 
 # Downloading converted SDF cameras.
-pushd ${HOME}/repos
+cd ${HOME}/repos
 git clone https://github.com/troiwill/realsense-ros-sdf.git
 cd realsense-ros-sdf
 git checkout sdf
-popd
 ```
 
 ## Building the PX4 repository
 
 Let's build the PX4 repository. The following lines clone the PX4 repository and then uses the PX4 ubuntu.sh script to build the tools.
 ```
-cd "${HOME}"
-mkdir -p repos
-pushd "${HOME}/repos"
+cd ${HOME}/repos
 git clone https://github.com/troiwill/PX4-Autopilot.git --recursive
 cd PX4-Autopilot
 git checkout e080fab8f690a4833e9cba17ac54024d73ab6a60
@@ -62,7 +62,6 @@ cd Tools/sitl_gazebo
 git checkout 25138e803ee8525ee5fe4e6d511506e88e3f819c
 cd ../../../
 bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
-popd
 ```
 
 Once you built the tools, you must restart your computer.
@@ -71,7 +70,7 @@ Once you built the tools, you must restart your computer.
 
 Update the `iris.sdf.jinja` file so that it includes a RealSense D435 camera.
 ```
-cd "${HOME}/repos
+cd ${HOME}/repos
 cp px4-mavros-gazebo-sim/iris.sdf.jinja PX4-Autopilot/Tools/sitl_gazebo/models/iris/
 ```
 
