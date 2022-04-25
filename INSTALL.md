@@ -71,6 +71,7 @@ Once you built the tools, you must restart your computer.
 Update the `iris.sdf.jinja` file so that it includes a RealSense D435 camera.
 ```
 cd ${HOME}/repos
+git clone https://github.com/troiwill/px4-mavros-gazebo-sim.git
 cp px4-mavros-gazebo-sim/iris.sdf.jinja PX4-Autopilot/Tools/sitl_gazebo/models/iris/
 ```
 
