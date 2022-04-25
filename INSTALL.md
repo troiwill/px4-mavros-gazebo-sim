@@ -55,7 +55,7 @@ git checkout sdf
 Let's build the PX4 repository. The following lines clone the PX4 repository and then uses the PX4 ubuntu.sh script to build the tools.
 ```
 cd ${HOME}/repos
-git clone https://github.com/troiwill/PX4-Autopilot.git --recursive
+git clone https://github.com/PX4/PX4-Autopilot.git --recursive
 cd PX4-Autopilot
 git checkout e080fab8f690a4833e9cba17ac54024d73ab6a60
 cd Tools/sitl_gazebo
