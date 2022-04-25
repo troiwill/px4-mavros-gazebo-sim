@@ -17,7 +17,7 @@ cd ${HOME}/Downloads
 chmod +x QGroundControl.AppImage
 ```
 
-## Installing VSCode
+## Installing VSCode (Optional)
 
 Let's install the Visual Studio Code (VSCode) IDE. Use the following lines to install VSCode or follow the installation instructions on the [official website](https://code.visualstudio.com/download).
 
@@ -25,7 +25,7 @@ Let's install the Visual Studio Code (VSCode) IDE. Use the following lines to in
 The Gazebo and ROS Melodic installation script will fail if we do not install the Python future package.
 ```
 sudo apt install python-minimal python-pip
-python2 -m pip install future
+python2 -m pip install future --user
 ```
 
 ## Install ROS Melodic with Gazebo 9
@@ -38,17 +38,7 @@ bash ubuntu_sim_ros_melodic.sh
 
 ## Installing the Intel RealSense ROS packages
 
-Use the following commands to install the Intel RealSense library and ROS packages for Melodic.
-```
-sudo apt install ros-melodic-realsense2-camera
-sudo apt install ros-melodic-realsense2-description
-
-# Downloading converted SDF cameras.
-cd ${HOME}/repos
-git clone https://github.com/troiwill/realsense-ros-sdf.git
-cd realsense-ros-sdf
-git checkout sdf
-```
+Follow the [installation instructions](https://github.com/troiwill/realsense-ros-sdf/blob/main/README.md#installation) for the `realsense-ros-sdf` repository to install the RealSense library, RealSense plugin, and ROS packages for Melodic.
 
 ## Building the PX4 repository
 
@@ -57,10 +47,6 @@ Let's build the PX4 repository. The following lines clone the PX4 repository and
 cd ${HOME}/repos
 git clone https://github.com/PX4/PX4-Autopilot.git --recursive
 cd PX4-Autopilot
-git checkout e080fab8f690a4833e9cba17ac54024d73ab6a60
-cd Tools/sitl_gazebo
-git checkout 25138e803ee8525ee5fe4e6d511506e88e3f819c
-cd ../../../
 bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 ```
 
