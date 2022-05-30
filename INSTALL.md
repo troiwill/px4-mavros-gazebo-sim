@@ -90,3 +90,64 @@ sudo apt upgrade libignition-math2
 ```
 
 Finally, let's confirm that Gazebo launches by running the following line. If all went well, Gazebo will run with no errors or warnings.
+
+## Rover Setup
+1. Clone the repositories for the Leo rover simulator.
+```
+cd ${HOME}/catkin_ws/src
+git clone https://github.com/troiwill/leo_simulator.git
+git clone https://github.com/troiwill/leo_common
+```
+2. Add media folder to the leo_simulator/leo_gazebo/, in the following organization:
+media
+-aruco_marker.material
+-aruco_marker.jpg
+3. Add the following line in the <export> section in package.xml inside leo_gazebo
+<gazebo_ros gazebo_media_path="${prefix}/media"/>
+4. Go to leo_common/leo_description/urdf and open macros.xacro
+
+    a. Add the following in the ```<!-- LINKS -->``` section
+    ```
+    <link name="${link_prefix}aruco_link">
+          <inertial>
+                <mass value="0"/>
+                <origin xyz="-0.019662 0.011643 0.5"/>
+                <inertia
+                  ixx="0.01042" ixy="0.001177" ixz="-0.0008871"
+                  iyy="0.01045" iyz="0.0002226"
+                  izz="0.01817"/>
+          </inertial>
+          <visual>
+            <origin xyz="0 0 0.005" rpy="0 0 0"/>
+            <geometry>
+              <box size="0.5 0.5 0"/>
+            </geometry>
+          </visual>
+    </link>
+    ```
+  b. Add the following in the ```<!-- JOINTS -->``` section
+  ```
+  <joint name="${joint_prefix}aruco_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="${link_prefix}base_link"/>
+        <child link="${link_prefix}aruco_link"/>
+  </joint>
+  ```
+  c. Add the following in the ```<!-- base ODE properties -->``` section
+  ```
+  <gazebo reference="${link_prefix}aruco_link">
+    <material>ArucoMarker/Image</material>
+  </gazebo>
+  ```
+5. Go to back to your catkin workspace and do catkin build
+6. Go to leo_simulator/leo_gazebo/launch and type
+roslaunch leo_gazebo.launch
+
+## Add launch and world files
+Add the new launch and world files for the simulation.
+
+```
+cd ${HOME}/repos
+cp px4-mavros-gazebo-sim/baylands_friction.world PX4-Autopilot/Tools/sitl_gazebo/worlds/
+cp px4-mavros-gazebo-sim/leo_uav_mavros_sitl.launch PX4-Autopilot/launch
+```
