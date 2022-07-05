@@ -47,7 +47,7 @@ Let's build the PX4 repository. The following lines clone the PX4 repository and
 cd ${HOME}/repos
 git clone https://github.com/PX4/PX4-Autopilot.git --recursive
 cd PX4-Autopilot
-bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
+bash ./Tools/setup/ubuntu.sh
 ```
 
 Once you built the tools, you must restart your computer.
