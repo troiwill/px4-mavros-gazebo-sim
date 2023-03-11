@@ -63,11 +63,20 @@ roslaunch px4 mavros_posix_sitl.launch
 
 ## Update Iris SDF Jinja file
 
-Update the `iris.sdf.jinja` file so that it includes a downward-facing FPV camera (this camera is also within PX4).
+Update the `iris.sdf.jinja` file so that it includes a downward front-facing Intel Realsense camera.
+
+1. Gather the `realsense_gazebo_plugin` and `realsense2_description` packages. Follow [these instructions](https://github.com/troiwill/realsense2_description#realsense2-description) to install the packages. **Note:** Ensure that you convert the camera's `*.xacro` file (`test_d435_camera.urdf.xacro`) to an `SDF` following the instructions towards the end of the readme.
+
+2. Make the following changes to the new SDF:
+  - Rename the SDF to `d435_camera.sdf`.
+  - In the SDF, lower the camera's mass so that the drone is not front-heavy, which will have adverse effects during flight. Replace the line `<mass>0.564</mass>` with `<mass>0.05</mass>`.
+  - In the SDF, change the camera name in the SDF file to `d435_camera`. That is, replace `<model name='realsense2_camera'>` with `<model name='d435_camera'>`.
+
+3. Update the `*.jinja` file to include the camera.
 ```
 cd ${HOME}/repos
 
-git clone https://github.com/troiwill/px4-mavros-gazebo-sim.git -b ros-noetic
+git clone https://github.com/troiwill/px4-mavros-gazebo-sim.git
 cp px4-mavros-gazebo-sim/models/iris/iris.sdf.jinja PX4-Autopilot/Tools/sitl_gazebo/models/iris/
 ```
 
